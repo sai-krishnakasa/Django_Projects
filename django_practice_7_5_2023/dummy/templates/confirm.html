@@ -1,0 +1,11 @@
+{% extends 'header.html' %}
+
+{% block content %}
+<h2>Confirm delete</h2>
+<p>Are you sure you want to delete "{{ object }}"?</p>
+<form action="{% url 'delete' object.pk %}" method="post">
+    {% csrf_token %} 
+    <input type="submit" value="Delete">
+    <a href="{% url 'detail' object.pk %}">Cancel</a>
+</form>
+{% endblock %}

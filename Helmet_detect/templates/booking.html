@@ -1,0 +1,76 @@
+{% extends 'base.html'%}
+{% load crispy_forms_tags %}
+{% block content%}
+<style>
+    .messsages{
+        padding-top: 150px;
+        font-weight: 800;
+        font-style: italic;
+        color:green;
+    }
+    #but{
+        position:absolute;
+        top:58%;
+        right:8%;
+    }
+   
+</style>
+<div class="messages" style="padding-top:100px;">
+    {% if messages %} 
+    {% for message in messages %}
+       <b style="color:red;"> {{message}} </b>
+    {% endfor %} 
+    {% endif %} 
+</div>
+<div class="container" >
+    <div class="text-center">
+        <br>
+        <br><br>
+        <h3>Pricing Table</h3>
+        <p>Here you can Select the Bus According to your pocket<br>
+        & according to your comfort</p>
+    </div>
+    <form method="get" class="filter">
+        <ul>
+       origin: {{filter.form.origin}} 
+       destination:{{filter.form.destination}}
+       seat_type:{{filter.form.seat_type}}
+       bus_type:{{filter.form.bus_type}}
+       start_date:{{filter.form.start_time}}
+       <button style="margin-left:150px;" id="but"  class="btn btn-sm btn-danger" type="submit">Submit</button>
+        </ul>
+    </form>
+    <br>
+    <div class="pricing-area text-center">
+            {% for bus in filter.qs%}
+             {% if bus.start_time > time_now %} 
+            <div class="col-sm-6 col-md-3 plan price-six wow fadeInRight">
+                <ul>
+                    <li class="heading-two">
+                        <h2>{{bus.bus.bus_type}}</h2>
+                        <span>Fare:{{bus.fare}}</span>
+                    </li>
+                    <li><b>WI-Fi </b></li>
+                    <li><b>{{bus.seat_type}}</b></li>
+                    <li>Starts:<label style="text-transform:capitalize"> {{bus.start_time}}</label></li>
+                    <li>Ends:<label style="text-transform:capitalize">{{bus.end_time}}</label></li>
+                    <li>Origin:<label style="text-transform:capitalize">{{bus.origin}}</label></li>
+                    <li>Destination:<label style="text-transform:capitalize">{{bus.destination}}</label></li>
+                    <li>Seats Available:<label style="text-transform:capitalize">{{bus.bus.not_booked_seats}}</label></li>
+                    {% if not user.is_admin%}
+                    <li class="plan-action">
+                        <a href="book/{{bus.id}}" class="btn btn-primary">Book</a>
+                    </li>
+                    {% endif%}
+                </ul>
+            </div>
+            
+             {% endif %} 
+            {% endfor %}
+        
+            <!--/pricing-area-->			
+    </div>
+   <center> <a  href="{% url 'book'%}" class="btn btn-primary">Back to top</a></center>
+</div><!--/#pricing-->
+
+{% endblock %}

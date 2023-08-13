@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block content%}
+<style>
+    
+    .drivers{
+        position:absolute;
+        top:5%;
+        right:60%;
+        height:auto;
+        min-height:925px;
+        max-height: 1200px;
+        margin-top: 5%;
+        color:black;
+        padding: 3px;
+        width:40%;
+    }
+     .buses{
+       
+       position: absolute;
+       color:black;
+       top:-100%;
+       right:0%;
+       width:60%;
+
+    } 
+    #abcd{
+        position: absolute;
+        top:28%;
+        right:5%;
+        margin:30px;
+    } 
+    #abc{
+        position: absolute;
+        top:20%;
+        right:5%;
+        margin: 20px;
+    } 
+    #ab{
+        position: absolute;
+        top:40%;
+        right:5%;
+        margin: 20px;
+    }
+    
+</style>
+<div class="container">
+    <div class="drivers">
+        <center><h2>Driver Details</h2>
+            <table border="5" >
+                <tr>
+                   <center><th>Name</th></center> 
+                    <th>View </th>
+                    <th>Delete</th>
+                </tr>
+        {% for driver in drivers %}
+                
+            <tr >
+                <td><center>{{driver}}</center></td>
+                <td><a  style="color:rgba(176, 184, 185, 0.966);padding:5px;" href="admin_desk/drivers/{{driver.pk}}">View</a> </td>
+                <td><a style="color:rgba(164, 177, 180, 0.966);padding:5px;" href="admin_desk/drivers/delete/{{driver.pk}}">Delete</a><br></td>
+            </tr>
+
+        {% endfor %}
+        </table>
+        </center>
+    </div>  
+<hr>
+
+    <div class="buses">
+        <center><h2 >Bus Details</h2>
+            <table border="5" >
+                <tr>
+                   <center><th>Name</th></center> 
+                    <th>View </th>
+                    <th>Delete</th>
+                </tr>
+                {% for bus in buses %}<br>
+                <tr>
+                   <td><center>{{bus}}</center></td> 
+            
+            <!-- <div class="p-t-15"> -->
+                <td><a style="color:rgba(164, 177, 180, 0.966)" href="admin_desk/buses/{{bus.pk}}">View</a></td>
+            <!-- </div> -->
+            <td><a style="color:rgba(164, 177, 180, 0.966)" href="admin_desk/buses/delete/{{bus.pk}}">Delete</a></td>
+        </tr>
+        {% endfor %}
+            </table>
+    </center>
+    </div>
+    <ul>
+
+    <li><form action="{% url 'add_driver' %}" method="">
+        <div class="p-t-15">
+            <button   id="ab" class="btn btn--radius-2 btn--blue" type="submit">Add Driver</button><br>
+            <!-- <button   id="abcd" class="btn btn--radius-2 btn--blue" type="submit">Bookings</button> -->
+        </div>
+    </form>
+</li>
+    <li><form action="{% url 'add_bus' %}" method="">
+        <div class="p-t-15">
+            <button   id="abcd" class="btn btn--radius-2 btn--blue" type="submit">Add Bus</button><br>
+            <!-- <button   id="abcd" class="btn btn--radius-2 btn--blue" type="submit">Bookings</button> -->
+        </div>
+    </form></li>
+    
+
+    <li><form action="{% url  'booking_details' %}" method="">
+        <div class="p-t-15">
+            <!-- <button   id="abcd" class="btn btn--radius-2 btn--blue" type="submit">Add Bus</button><br> -->
+            <button   id="abc" class="btn btn--radius-2 btn--blue" type="submit">Bookings</button>
+        </div>
+    </form></li>
+</ul>
+</div>
+{% endblock %}

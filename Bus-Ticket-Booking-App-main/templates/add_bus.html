@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% block content%}
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        #alert{
+            margin-top:90px;
+        }
+    </style>
+  </head>
+<body>
+    {% if messages %}<ul>
+        {% for message in messages %}<li>
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+        <div id="alert" class="alert alert-danger">
+            <strong>Error! : {{message}} </strong>
+        </div>
+        {% else %}
+        
+        <div id="alert" class="alert alert-success">
+            <strong>Success! : {{message}} </strong>
+        </div>
+
+        {% endif %}
+        {% endfor %}</li></ul>{% endif %}
+<form action="add_bus" method="post" >
+    {%csrf_token%}
+    <div style="margin:100px;">
+        <center><h2>Add Bus</h2>
+        <label>Driver:</label>
+            <select name="driver" > 
+                    {% for driver in drivers %}
+                        <option>{{driver}}</option>
+                    {% endfor %}
+            </select><br><br>
+        <label>Origin:</label>
+        <select name="origin" required>
+            {% if origin %}
+                <option >{{origin}}</option>
+            {%else%}
+                {% for orign in origins %}
+                    <option>{{orign}}</option>
+                {% endfor %}
+            {% endif %}
+            
+        </select>
+        <br>
+        <br>
+        <label>Destination:</label>
+        <select name="destination" >
+            {% if destination %}
+            <option >{{destination}}</option>
+        {%else%}
+            {% for dest in dests %}
+                <option  value="{{dest}}">{{dest}}</option>
+            {% endfor %}
+        {%endif %}
+        </select><br><br>
+        <label>Bus No:</label><input name="bus_no" type="text" value="{{bus_no}}" placeholder="Bus NO" required>
+        <br><br>
+        <label>Bus Type:</label>
+        <select name="bus_type">
+            {% if bus_type %}
+            <option value="{{bus_type}}">{{bus_type}}</option>
+            {% else %}
+                {% for bus_type in bus_types %}
+                    <option value="{{bus_type}}">{{bus_type}}</option>
+                {% endfor %}
+            {% endif %}
+        </select>
+        <br><br>
+        <label>Seat Type:</label>
+        <select name="seat_type" required>
+            {% if seat_type %}
+            <option  value="sleeper">sleeper</option>
+            {%else%}
+                <option  value="sleeper">sleeper</option>
+                <option  value="semi-sleeper">semi-sleeper</option>
+                <option  value="normal">Seater</option>
+            {%endif %}
+        </select><br><br>
+        <label>Avaialble seats:</label><input type="number" name='seats'max="25" size="2" value="25">
+        <br><br>
+        <label>Starts on:</label>
+        <input type="datetime-local" 
+       name="start_time" 
+       min="{{date}}" max="2022-12-30T00:00" value="{{start_date}}" required>
+       <br><br>
+        <label>Ends on:</label>
+        <input type="datetime-local" 
+       name="end_time" 
+       min="{{date}}" max="" value="{{end_date}}" required><br><br>
+       <label>Fare:</label><input name="fare" type="number" value="{{fare}}" max="4000" required>
+       <br><br>
+       <center> <button  type="submit" class="btn btn-primary">Submit</button></center>
+    </center>
+    </div>
+        
+  </form>
+</body>
+{% endblock %}

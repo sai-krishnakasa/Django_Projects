@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .profile_form{
+        position: absolute;
+        top:35%;
+        left:35%;
+        background-color: black;
+        color:white;
+        padding-top:25px;
+        margin-top: 5%;
+        border-radius: 5px;
+        height:200px;
+        width:450px;
+    }
+    
+    li{
+        padding: 1px;
+        list-style-type: None;
+    }
+    .pc{
+        vertical-align: middle;
+        width:100px;
+        height:100px;
+        float: right;
+        margin-right:40px;
+        border-radius: 50%;
+        transition: 0.6s ease-out;
+        scale:1.0;
+    }
+    .pc:hover{
+        cursor: pointer;
+        transition: 0.3s ease-in-out;
+        scale: 1.2;   
+    }
+    h3{
+        position:absolute;
+        top:38%;
+        left:47%;
+        color:rgb(43, 102, 157);
+        font-size:x-large;
+        font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    }
+    .links{
+        position:absolute;
+        top:28%;
+        left:75%;
+        
+    }
+    .wallet_form{
+        height:250px;
+        width:250px;
+        position: absolute;
+        top:40%;
+        left:5%;
+        background-color: rgb(197, 199, 49);
+        color:black;
+        border-radius:5px;
+        padding: 3px;
+        margin:2px;
+    }
+    #alert{
+        margin-top:90px;
+    }
+    #abc{
+        position: absolute;
+        top:20%;
+        right:5%;
+        margin: 20px;;
+    } 
+</style>
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  </head>
+<body>
+    <!-- <div class="links">
+        <a class="btn btn-primary" href="booking_history">Booking History</a>
+        <br>
+        <a class="btn btn-primary"  href="wallet_bal">Wallet</a>
+    </div> -->
+    {% if not  customer.is_admin %}
+    <form action="{% url  'booking_details' %}" method="">
+        <div class="p-t-15">
+            <!-- <button   id="abcd" class="btn btn--radius-2 btn--blue" type="submit">Add Bus</button><br> -->
+            <button   id="abc" class="btn btn--radius-2 btn--blue" type="submit">Bookings</button>
+        </div>
+    </form>
+    {% endif %}
+    <b ><h3 style="font-weight:700;">Welcome {{customer.username}}</h3></b>
+    <form action="edit_profile" class="profile_form">
+                <!-- url_for('static',filename='uploads/'+session['username']+'.png') in -->
+                {% if customer.profile_pic %}
+                    <img  class="pc" src="{{customer.profile_pic.url}}" alt="..." />
+                    {% else %}
+                <img class="pc" src="/media/media/default.png" alt="..." />
+                    
+                    {% endif %}
+                <ul>
+                <li><strong>Email:</strong> {{customer.email}} </li>
+                <li><strong> Username:</strong> {{customer.username}} </li>
+                <li> <strong>FirstName:</strong> {{customer.firstname}} </li>
+                <li> <strong>LastName: </strong>{{customer.lastname}}</li>
+                <li> <strong>Mobile Number:</strong> {{customer.phone}}</li>
+                {% if not  customer.is_admin %}
+                <li> <strong>Availble Balance:</strong> {{customer.balance}}</li>
+                {% endif %}
+            </ul>
+            <input style='color:black;background-color:azure;margin-bottom: 40px;  cursor: pointer; height:30px; width:120px;  margin-left: 300px;' type="submit" value="Edit">
+        </form>
+        <!-- <label><pre>{% if messages %} 
+            {% for message in messages %}
+            {{message}}
+            {% endfor %} 
+        {% endif %} </pre></label> -->
+        {% if messages %}<ul>
+            {% for message in messages %}<li>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <div id="alert" class="alert alert-danger">
+                <strong>Error! : {{message}} </strong>
+            </div>
+            {% else %}
+            
+            <div id="alert" class="alert alert-success">
+                <strong>Success! : {{message}} </strong>
+            </div>
+
+            {% endif %}
+            {% endfor %}</li></ul>{% endif %}
+        
+        
+        
+        {% if not  customer.is_admin %}
+        <form action="update_wallet" method="post" class="wallet_form">
+            {%csrf_token%}
+            <ul>
+                <center style="padding-right:30px;">Wallet Details</center>
+                <div style="padding-right:25px;">
+                    <li><strong>Current Balance: {{customer.balance}}</strong></li>
+                    
+                     <div class="md-form form-sm">
+                        <input type="number" id="inputSMEx" name="amount" autocomplete="off" value="{{amount}}" class="form-control form-control-sm">
+                        <!-- <select name="action" >
+                            <option value="deposit" name="deposit">Deposit</option>
+                            <option value="withdraw" name="withdraw">withdraw</option>
+                        </select> -->
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label" style="font-size:20px;">Transaction Type:</label>
+                                    <div class="p-t-10">
+                                        <center>
+                                        <label class="radio-container m-r-45">Deposit
+                                            <input type="radio" checked="checked" name="type" value="deposit">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="radio-container">Withdraw
+                                            <input type="radio" name="type" value="withdraw">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </center>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- <label><pre>Enter Account Password  To Continue Withdrawal/Deposit</pre></label> -->
+                        <input type="password" name="password" placeholder="Account Password"><br><br>
+                      </div>
+                      <input  type="submit"  class="form-control form-control-sm">
+                </div>
+            </ul>
+        </form>
+        {% endif %}
+</body>
+{% endblock %}

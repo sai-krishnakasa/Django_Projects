@@ -1,0 +1,10 @@
+{%extends 'header.html'%}
+{% block content%}
+<form method="POST">
+    {% csrf_token %}
+    {% if form %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
+    {% endif %}
+</form>
+{% endblock %}

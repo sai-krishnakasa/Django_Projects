@@ -1,0 +1,14 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <title>Index</title>  
+</head>  
+<body>  
+<form method="POST" action="put_data" >  
+        {% csrf_token %}  
+         <input type="text" name="rest_object">
+        <button type="submit" >Submit</button>  
+    </form>  
+</body>  
+</html>  

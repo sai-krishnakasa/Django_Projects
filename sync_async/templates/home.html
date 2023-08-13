@@ -1,0 +1,13 @@
+{% extends 'base.html'%}
+{%block content%}
+{{data}}
+    <h1>People</h1>
+    {% for p in people.results%}
+        {{p.name}}
+    {% endfor %}
+    <h1>Starship</h1>
+    {% for s in starships.results%}
+        {{s.name}}
+    {% endfor %}
+    {{time}}
+{% endblock %}

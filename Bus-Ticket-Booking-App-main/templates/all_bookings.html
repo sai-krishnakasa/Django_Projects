@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    table,th{
+        margin-top:180px ;
+        margin-left: 5%;
+        text-align: center;
+    }
+    
+    h1{
+        position:absolute;
+        top:17%;
+        left:45%;
+        text-align: center;
+        color:black
+    }
+    .filter{
+        position:absolute;
+        top:30%;
+        right:5%;
+    }
+    th{
+        padding: 3px;
+        margin:10px;
+        text-transform: uppercase;
+    }
+    td{
+        padding: 3px;
+        margin:10px;
+        text-transform:capitalize;
+    }
+    .kk{
+        margin-top: 10%;
+        color:red;
+        float:right;
+        margin-right:5%;
+        font-size: small;
+    }
+</style>
+<body>
+    <div>
+        <div style="padding-top:100px">
+            <form  class="filter" method="get" >
+                ID:{{filter.form.id}}
+                origin:{{filter.form.origin}}
+                Mobile :{{filter.form.mobile_no}}
+                Start Date:{{filter.form.start_date}}
+                <button style="margin-left:50px;" id="but"  class="btn btn-sm btn-danger" type="submit">Submit</button>
+            </form>
+        </div>
+        {% if not user.is_admin%}
+<dl class="kk">
+    <h3>Refund Policy </h3>
+    <dt>Note:</dt>
+        <dd><li>Cancelling Before 24hrs of time of Departure 70% of amount will be refunded </li></dd>
+    <dd><li>Cancelling Before 12hrs of Starting 50% will be refunded back</li></dd>
+</dl>
+{% endif %}
+        <center>
+        <table border="1"  >
+            <h1>Bookings</h1>
+            <tr>
+            <th>Booking Id</th>
+            <th>Customer Name </th>
+            <th> driver Name </th>
+            <th>Bus No </th>
+            <th>origin </th>
+            <th>Destination </th>
+            <th>Booked date </th>
+            <th>Booking End date </th>
+            <th>No.of Passengers</th>
+            <th>Customer Mobile No:</th>
+            {% if not user.is_admin%}
+            <th>Cancel Ticket</th>
+            {% endif %}
+        </tr>
+
+        {% for book in filter.qs %}
+        <tr>
+           <td>{{book.id}}</td>
+           <td>{{book.booking_cust_details.username}}</td>
+           <td>{{book.booking_Bus_details.driver_details.name}}</td>
+           <td>{{book.booking_Bus_details.bus_no}}</td>
+           <td>{{book.booking_Bus_details.origin}}</td>
+           <td>{{book.booking_Bus_details.destination}}</td>
+           <td>{{book.booking_Bus_details.start_time}}</td>
+           <td>{{book.booking_Bus_details.end_time}}</td>
+           <td>{{book.no_of_passengers}}</td>
+           <td>{{book.booking_cust_details.phone}}</td>
+        <form>
+            <!-- <h1>{{book.booking_cust_details.is_admin}}</h1> -->
+            {% if book.booking_Bus_details.start_time > time_now and not  user.is_admin%}
+           <td><a href="booking_details/delete_ticket/{{book.id}}" type="submit">Cancel Ticekt</a></td>
+           {% endif %}
+        </form>
+        </tr>
+        {% endfor %%}
+    </table>
+    
+</center>
+
+    </div>
+</body>
+{% endblock %}

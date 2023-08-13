@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<style>
+    form{
+        height:390px;
+        width: 350px;
+        background-color:rgb(143, 212, 215);
+        color:black;
+        position: absolute;
+        top:27%;
+        left:35%;
+        padding: 15px;
+        margin:15px;
+    }
+    label{
+        font-weight: 700;
+    }
+</style>
+<body>
+    <center>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <h2 style="color: green;font-weight:900;text-transform:uppercase">{{bus.origin}} - {{bus.destination}}</h2>
+       <label> Bus No :</label>{{bus.bus_no}}<br>
+       <label>Seat Type:</label>{{bus.seat_type}}<br>
+       <label>Origin :</label>{{bus.origin}}<br>
+        <label>Destination : </label>{{bus.destination}}<br>
+        <label>Bus Type :</label>{{bus.bus_type}}<br>
+        <label>Starting at :</label>{{bus.start_time}}<br>
+        <label>Ending at :</label> {{bus.end_time}}<br>
+        <label>Fare :</label>{{bus.fare}}<br>
+        <br>
+        {% if not hide_submit %}
+        <label>Enter No Passengers:</label>
+            <!-- <input type="number" size="1"  max="4" name="count"> -->
+            <select  name="count">
+                <option >
+                    <label>1 </label>
+                </option>
+                <option>
+                    <label>2 </label>
+                </option>
+                <option>
+                    <label>3 </label>
+                </option>
+                <option>
+                    <label>4 </label>
+                </option>
+            </select> <b>*</b> <input type="text"  size="4" name="fare" value="{{bus.fare}}" class="field left" readonly>
+            <input style="margin-left:220px;margin-top:10px;" type="submit" value="submit">
+            {% endif %}
+    </form>
+</center>
+</body>
+{% endblock %}
